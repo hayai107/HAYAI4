@@ -1,0 +1,383 @@
+/* =========================================================
+   Tokens
+========================================================= */
+:root {
+  --crema: #FBF6EC;
+  --blanco-calido: #FFFDF9;
+  --rosa-palido: #FBE7EC;
+  --rosa-suave: #F3C9D4;
+  --rosa-medio: #E0A2B6;
+  --amarillo-suave: #F7E3A1;
+  --amarillo-flor: #F5C331;
+  --amarillo-flor-claro: #FBE27A;
+  --amarillo-flor-hondo: #D69A1E;
+  --centro-girasol: #8A5A2B;
+  --centro-girasol-claro: #A6753C;
+  --verde: #8CA872;
+  --verde-hondo: #5E7B3E;
+  --tronco: #9C7B54;
+  --tronco-hondo: #7C5E3C;
+  --tinta: #4A3F35;
+  --tinta-suave: #8A7D6E;
+
+  --fuente-display: "Fraunces", serif;
+  --fuente-cuerpo: "Quicksand", sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+  background: var(--crema);
+  color: var(--tinta);
+  font-family: var(--fuente-cuerpo);
+  overflow-x: hidden;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+}
+
+/* =========================================================
+   Fondo de escena
+========================================================= */
+.escena {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  background: linear-gradient(180deg, var(--blanco-calido) 0%, var(--crema) 45%, var(--rosa-palido) 100%);
+  overflow: hidden;
+}
+
+.luz {
+  position: absolute;
+  top: -20%;
+  left: 50%;
+  width: 140vw;
+  height: 60vh;
+  transform: translateX(-50%);
+  background: radial-gradient(closest-side, rgba(247, 227, 161, 0.55), rgba(247, 227, 161, 0));
+  filter: blur(10px);
+}
+
+.pasto {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 14vh;
+  background: linear-gradient(180deg, rgba(140, 168, 114, 0) 0%, rgba(140, 168, 114, 0.18) 100%);
+}
+
+.petalos-flotantes {
+  position: absolute;
+  inset: 0;
+}
+
+.petalo-flotante {
+  position: absolute;
+  top: -5vh;
+  width: 10px;
+  height: 10px;
+  background: var(--amarillo-flor);
+  border-radius: 60% 40% 60% 40%;
+  opacity: 0.5;
+  animation-name: caer;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+@keyframes caer {
+  0%   { transform: translate(0, 0) rotate(0deg); }
+  100% { transform: translate(var(--drift, 40px), 110vh) rotate(220deg); }
+}
+
+/* =========================================================
+   Guiño decorativo + botón de música
+========================================================= */
+.guino {
+  position: fixed;
+  top: 18px;
+  left: 18px;
+  z-index: 5;
+  opacity: 0.85;
+  animation: flotar-suave 6s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes flotar-suave {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+
+.btn-musica {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  z-index: 10;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid rgba(74, 63, 53, 0.15);
+  background: rgba(255, 253, 249, 0.8);
+  backdrop-filter: blur(4px);
+  color: var(--tinta-suave);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: color 0.3s ease, border-color 0.3s ease;
+}
+
+.btn-musica.silenciado { color: #C9BFB2; }
+.btn-musica:hover { border-color: var(--rosa-medio); color: var(--rosa-medio); }
+
+/* =========================================================
+   Intro
+========================================================= */
+main { position: relative; z-index: 1; }
+
+.pantalla {
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 10vh 6vw;
+}
+
+.eyebrow {
+  font-size: 0.95rem;
+  letter-spacing: 0.04em;
+  color: var(--rosa-medio);
+  margin: 0 0 0.6rem 0;
+}
+
+.titulo-intro {
+  font-family: var(--fuente-display);
+  font-style: italic;
+  font-weight: 500;
+  font-size: clamp(2rem, 8vw, 3rem);
+  margin: 0 0 0.8rem 0;
+}
+
+.texto-intro {
+  font-size: 1.05rem;
+  color: var(--tinta-suave);
+  margin: 0 0 2.6rem 0;
+}
+
+.boton-principal {
+  font-family: var(--fuente-cuerpo);
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--blanco-calido);
+  background: linear-gradient(135deg, var(--amarillo-flor), var(--amarillo-flor-hondo));
+  border: none;
+  padding: 0.95rem 2.2rem;
+  border-radius: 999px;
+  cursor: pointer;
+  box-shadow: 0 8px 22px rgba(214, 154, 30, 0.35);
+  transition: transform 0.35s ease, box-shadow 0.35s ease;
+}
+
+.boton-principal:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 26px rgba(214, 154, 30, 0.45);
+}
+
+.boton-principal:focus-visible,
+.enlace-nav:focus-visible,
+.btn-musica:focus-visible {
+  outline: 2px solid var(--rosa-medio);
+  outline-offset: 3px;
+}
+
+/* =========================================================
+   Experiencia: árbol siempre visible + texto al lado
+========================================================= */
+.experiencia {
+  display: none;
+}
+
+.experiencia.visible {
+  display: flex;
+  flex-direction: column;
+}
+
+.escena-flores {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  height: 52svh;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding-top: env(safe-area-inset-top, 0px);
+  background: linear-gradient(180deg, rgba(251, 246, 236, 0) 0%, var(--crema) 88%);
+}
+
+.contenedor-arbol {
+  width: min(92vw, 480px);
+  height: 100%;
+}
+
+.contenedor-arbol svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.columna-texto {
+  position: relative;
+  z-index: 3;
+  padding: 3vh 8vw 14vh 8vw;
+  background: var(--crema);
+}
+
+/* =========================================================
+   El árbol
+========================================================= */
+.resplandor {
+  opacity: 0;
+  transition: opacity 1.6s ease;
+}
+.resplandor.mostrar { opacity: 1; }
+
+.tronco {
+  opacity: 0;
+  transform: scaleY(0.05);
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+  transition: opacity 0.6s ease, transform 1.3s cubic-bezier(0.22, 0.9, 0.3, 1);
+}
+.tronco.mostrar { opacity: 1; transform: scaleY(1); }
+
+.follaje {
+  fill: var(--verde);
+  opacity: 0;
+  transform: scale(0.4);
+  transform-box: fill-box;
+  transform-origin: center;
+  transition: opacity 0.9s ease, transform 0.9s ease;
+}
+.follaje.mostrar { opacity: 0.94; transform: scale(1); }
+.copa-grupo .follaje:nth-child(odd) { fill: var(--verde-hondo); }
+
+.girasol {
+  opacity: 0;
+  transform: scale(0.25);
+  transform-box: fill-box;
+  transform-origin: center;
+  transition: opacity 0.65s cubic-bezier(0.2, 0.8, 0.3, 1), transform 0.65s cubic-bezier(0.2, 0.8, 0.3, 1);
+}
+.girasol.mostrar { opacity: 1; transform: scale(1); }
+
+.grupo-arbol.brisa {
+  animation: brisa 7s ease-in-out infinite;
+  transform-origin: 50% 100%;
+  transform-box: fill-box;
+}
+
+@keyframes brisa {
+  0%, 100% { transform: rotate(-0.5deg); }
+  50% { transform: rotate(0.5deg); }
+}
+
+.grupo-arbol.brisa .girasol {
+  animation: mecer 5.5s ease-in-out infinite;
+  transform-origin: center;
+}
+
+@keyframes mecer {
+  0%, 100% { transform: rotate(-2deg) scale(1); }
+  50% { transform: rotate(2deg) scale(1); }
+}
+
+.listón-tronco {
+  opacity: 0;
+  transform: scale(0.6);
+  transform-box: fill-box;
+  transform-origin: center;
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.listón-tronco.mostrar { opacity: 1; transform: scale(1); }
+
+/* =========================================================
+   Texto que aparece junto al árbol
+========================================================= */
+.titulo-ramo {
+  margin: 0 0 3rem 0;
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 1s ease, transform 1s ease;
+}
+.titulo-ramo.mostrar { opacity: 1; transform: translateY(0); }
+
+.para-ti {
+  font-family: var(--fuente-display);
+  font-style: italic;
+  font-size: clamp(1.6rem, 6vw, 2.3rem);
+  margin: 0 0 0.4rem 0;
+}
+
+.subtitulo-ramo {
+  font-size: 0.98rem;
+  color: var(--tinta-suave);
+  margin: 0;
+}
+
+.mensaje-contenido { max-width: 480px; }
+
+.linea {
+  font-size: 1.08rem;
+  line-height: 1.65;
+  color: var(--tinta);
+  margin: 0 0 1.1rem 0;
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 0.9s ease, transform 0.9s ease;
+}
+.linea.mostrar { opacity: 1; transform: translateY(0); }
+
+.linea.espacio { margin-top: 2rem; }
+
+.navegacion {
+  margin-top: 3.2rem;
+  opacity: 0;
+  transition: opacity 1s ease;
+}
+.navegacion.mostrar { opacity: 1; }
+
+.enlace-nav {
+  font-family: var(--fuente-cuerpo);
+  font-size: 0.92rem;
+  text-decoration: none;
+  color: var(--tinta-suave);
+  padding: 0.5rem 0.2rem;
+  border-bottom: 1px solid transparent;
+  transition: color 0.3s ease, border-color 0.3s ease;
+}
+.enlace-nav:hover { color: var(--rosa-medio); border-color: var(--rosa-medio); }
+
+/* =========================================================
+   Responsive: en pantallas anchas, el árbol queda a un lado
+========================================================= */
+@media (min-width: 860px) {
+  .experiencia.visible {
+    display: grid;
+    grid-template-columns: 1.05fr 1fr;
+    align-items: start;
+  }
+  .escena-flores {
+    height: 100svh;
+    align-items: center;
+  }
+  .contenedor-arbol { width: min(34vw, 500px); }
+  .columna-texto {
+    padding: 16vh 5vw 20vh 3vw;
+  }
+}
