@@ -33,7 +33,7 @@ html, body {
   background: var(--crema);
   color: var(--tinta);
   font-family: var(--fuente-cuerpo);
-  overflow-x: hidden;
+  overflow-x: clip;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -117,9 +117,11 @@ html, body {
   top: 16px;
   right: 16px;
   z-index: 10;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
+  min-height: 44px;
+  padding: 10px 14px;
+  gap: 8px;
+  font: 600 .78rem var(--fuente-cuerpo);
+  border-radius: 24px;
   border: 1px solid rgba(74, 63, 53, 0.15);
   background: rgba(255, 253, 249, 0.8);
   backdrop-filter: blur(4px);
@@ -131,7 +133,8 @@ html, body {
   transition: color 0.3s ease, border-color 0.3s ease;
 }
 
-.btn-musica.silenciado { color: #C9BFB2; }
+.btn-musica.silenciado { color: #786746; }
+.btn-musica.silenciado #onda1, .btn-musica.silenciado #onda2 { visibility: hidden; }
 .btn-musica:hover { border-color: var(--rosa-medio); color: var(--rosa-medio); }
 
 /* =========================================================
@@ -238,73 +241,28 @@ main { position: relative; z-index: 1; }
   background: var(--crema);
 }
 
-/* =========================================================
-   El árbol
-========================================================= */
-.resplandor {
-  opacity: 0;
-  transition: opacity 1.6s ease;
+/* Jardín: los transforms del SVG se calculan por separado del crecimiento. */
+[hidden] { display: none !important; }
+.escena-flores { flex-direction: column; align-items: center; justify-content: center; height: 64svh; min-height: 360px; background: linear-gradient(180deg, #fffdf9, #fbf6ec); }
+.contenedor-arbol { width: min(100%, 620px); min-height: 0; flex: 1; }
+.contenedor-arbol svg { display: block; overflow: hidden; }
+.pie-jardin { flex: none; text-align: center; padding: 0 16px 18px; }
+.controles-jardin { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
+#btn-repetir, #btn-movimiento { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 46px; border: 1px solid #daccac; border-radius: 24px; background: #fffdf9; color: #5f5037; font: 600 .8rem var(--fuente-cuerpo); padding: 10px 16px; cursor: pointer; box-shadow: 0 3px 10px #7964350a; transition: background .2s, transform .2s; }
+#btn-repetir { background: #f9df81; border-color: #ebc85e; }
+.icono-control { font: 20px sans-serif; line-height: 1; }
+#btn-repetir:hover, #btn-movimiento:hover { background: #fff2bf; transform: translateY(-2px); }
+#btn-repetir:focus-visible, #btn-movimiento:focus-visible { outline: 2px solid var(--verde-hondo); outline-offset: 4px; }
+@media (max-width: 420px) {
+  .pie-jardin { padding-inline: 8px; }
+  .controles-jardin { gap: 6px; }
+  #btn-repetir, #btn-movimiento { font-size: .7rem; padding-inline: 10px; }
 }
-.resplandor.mostrar { opacity: 1; }
-
-.tronco {
-  opacity: 0;
-  transform: scaleY(0.05);
-  transform-box: fill-box;
-  transform-origin: 50% 100%;
-  transition: opacity 0.6s ease, transform 1.3s cubic-bezier(0.22, 0.9, 0.3, 1);
+.frase-flor { pointer-events: none; }
+.frase-flor text { font: italic 18px var(--fuente-display); fill: #77572f; }
+@media (prefers-reduced-motion: reduce) {
+  .petalos-flotantes { display: none; }
 }
-.tronco.mostrar { opacity: 1; transform: scaleY(1); }
-
-.follaje {
-  fill: var(--verde);
-  opacity: 0;
-  transform: scale(0.4);
-  transform-box: fill-box;
-  transform-origin: center;
-  transition: opacity 0.9s ease, transform 0.9s ease;
-}
-.follaje.mostrar { opacity: 0.94; transform: scale(1); }
-.copa-grupo .follaje:nth-child(odd) { fill: var(--verde-hondo); }
-
-.girasol {
-  opacity: 0;
-  transform: scale(0.25);
-  transform-box: fill-box;
-  transform-origin: center;
-  transition: opacity 0.65s cubic-bezier(0.2, 0.8, 0.3, 1), transform 0.65s cubic-bezier(0.2, 0.8, 0.3, 1);
-}
-.girasol.mostrar { opacity: 1; transform: scale(1); }
-
-.grupo-arbol.brisa {
-  animation: brisa 7s ease-in-out infinite;
-  transform-origin: 50% 100%;
-  transform-box: fill-box;
-}
-
-@keyframes brisa {
-  0%, 100% { transform: rotate(-0.5deg); }
-  50% { transform: rotate(0.5deg); }
-}
-
-.grupo-arbol.brisa .girasol {
-  animation: mecer 5.5s ease-in-out infinite;
-  transform-origin: center;
-}
-
-@keyframes mecer {
-  0%, 100% { transform: rotate(-2deg) scale(1); }
-  50% { transform: rotate(2deg) scale(1); }
-}
-
-.listón-tronco {
-  opacity: 0;
-  transform: scale(0.6);
-  transform-box: fill-box;
-  transform-origin: center;
-  transition: opacity 0.7s ease, transform 0.7s ease;
-}
-.listón-tronco.mostrar { opacity: 1; transform: scale(1); }
 
 /* =========================================================
    Texto que aparece junto al árbol
@@ -376,7 +334,7 @@ main { position: relative; z-index: 1; }
     height: 100svh;
     align-items: center;
   }
-  .contenedor-arbol { width: min(34vw, 500px); }
+  .contenedor-arbol { width: min(100%, 680px); max-height: 800px; }
   .columna-texto {
     padding: 16vh 5vw 20vh 3vw;
   }
